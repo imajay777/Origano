@@ -55,11 +55,11 @@ function HTMLfruitProduct(con){
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
                  <button type="button" onclick="cart2('${FRUIT[con]
-                    .name}','${FRUIT[con].price}','${URL},'${con}','${btn}')" 
-                    class="btn btn-sm btn-outline-secondary" >Buy</button>
+                    .name}','${FRUIT[con].price}','${URL}','${con}','${btn}')" 
+                    class="btn btn-sm btn-outline-secondary" ><a href="cart.html" style="color: inherit">Buy</a></button>
 
                  <button id="${btn}" type="button" onclick="cart('${FRUIT[con].name}',
-                 '${FRUIT[con].price}','${URL}',${con}','${btn}')" class="btn btn-sm btn-outline-secondary" >Add to cart</button>
+                 '${FRUIT[con].price}','${URL}','${con}','${btn}')" class="btn btn-sm btn-outline-secondary" >Add to cart</button>
                </div>
                <small class="text-muted">Free Shipping </small>
               </div>
@@ -91,10 +91,10 @@ function HTMLjuiceProduct(con){
               <div class="btn-group">
                  <button type="button" onclick="cart2('${JUICE[con]
                     .name}','${JUICE[con].price}','${URL},'${con}','${btn}')" 
-                    class="btn btn-sm btn-outline-secondary" >Buy</button>
+                    class="btn btn-sm btn-outline-secondary" ><a href="cart.html" style="color: inherit">Buy</a></button>
 
                  <button id="${btn}" type="button" onclick="cart('${JUICE[con].name}',
-                 '${JUICE[con].price}','${URL}',${con}','${btn}')" class="btn btn-sm btn-outline-secondary" >Add to cart</button>
+                 '${JUICE[con].price}','${URL}','${con}','${btn}')" class="btn btn-sm btn-outline-secondary" >Add to cart</button>
                </div>
                <small class="text-muted">Free Shipping </small>
               </div>
@@ -107,13 +107,89 @@ function HTMLjuiceProduct(con){
 }
 
 
+//ANIMATION
+function animation() {
+	// const toast = swal.mixin({
+	// 	toast: true,
+	// 	position: 'top-end',
+	// 	showConfirmButton: false,
+	// 	timer: 1000
+	// });
+
+	// toast({
+	// 	type: 'success',
+	// 	title: 'Added to Shopping Cart'
+	// })
+
+	Swal.fire({
+  title: 'Added!',
+  text: '',
+  type: 'success',
+  showConfirmButton: false,
+  timer : 800
+})
+
+}
+
+//CART FUNCTIONS
+
+function cart(name, price, url, con, btncart) {
+	var item = {
+		name: name,
+		price: price, 
+		url: `'${url}'`
+	};
+
+	cartItems.push(item);
+	let storage = JSON.parse(localStorage.getItem("cart"));
+	if(storage == null) {
+		products.push(item);
+		localStorage.setItem("cart", JSON.stringify(products));
+	}
+	else {
+		products = JSON.parse(localStorage.getItem("cart"));
+		products.push(item);
+		localStorage.setItem("cart", JSON.stringify(products));
+
+	}
+
+	cart_n.innerHTML = `[${products.length}]`;
+	document.getElementById(btncart).style.display = "none";
+	animation();
+
+
+}
+
+function cart2(name, price, url, con, btncart) {
+	var item = {
+		name: name,
+		price: price, 
+		url: `'${url}'`
+	};
+
+	cartItems.push(item);
+}
+
+
 
 //RENDER
 function render(){
-   for(let index = 0; index <= 6; index++){
+   for(let index = 0; index < 6; index++){
        fruitDIV.innerHTML+=`${HTMLfruitProduct(index)}`;
    }
-   for(let index = 0; index <= 3; index++){
+   for(let index = 0; index < 3; index++){
     juiceDIV.innerHTML+=`${HTMLjuiceProduct(index)}`;
-}
+   }
+
+   if(localStorage.getItem("cart") == null)
+   {
+
+   }
+   else
+   {
+   		products = JSON.parse(localStorage.getItem("cart"));
+   		cart_n.innerHTML = `[${products.length}]`;
+   }
+
+
 }
