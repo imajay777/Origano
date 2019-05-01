@@ -39,10 +39,14 @@ function buy() {
 	counter += 1;
 
 	let db = firebase.database().ref("order/" + counter);
+	var items = [];
+	for (let i = 0; i < products.length; i++)
+		items[i] = { name: products[i].name, price: products[i].price}; 
 	let itemdb = {
 		id:counter, 
 		order:counter-895,
-		total:total
+		total:total,
+		items:items
 	};
 
 	db.set(itemdb);
